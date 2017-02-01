@@ -123,10 +123,56 @@ namespace QuickEdit
 			EditorGUIUtility.PingObject(go);
 		}
 
+
+        [MenuItem("Tools/QuickEdit/Combine Meshes Single Material")]
+        public static void MergeSelectedMeshes2()
+        {
+            List<MeshFilter> meshFilters = new List<MeshFilter>();
+            List<Material> materials = new List<Material>();
+
+            foreach(Transform t in Selection.transforms)
+            {
+                foreach(MeshFilter mf in t.GetComponentsInChildren<MeshFilter>())
+                {
+                    MeshRenderer mr = mf.transform.GetComponent<MeshRenderer>();
+
+                    if(mf == null || mf.sharedMesh == null) continue;
+
+                    meshFilters.Add(mf);
+
+                    for(int i = 0; i < mf.sharedMesh.subMeshCount; i++)
+                    {
+                        Material[] sharedMaterials = mr == null ? null : mr.sharedMaterials;
+
+                        if(sharedMaterials != null && i < sharedMaterials.Length)
+                            materials.Add(sharedMaterials[i]);
+                        else
+                            materials.Add(null);
+                    }
+                }
+            }
+
+            Mesh combined;
+            Combine(meshFilters, out combined, true);
+            Undo.RegisterCreatedObjectUndo(combined, "Combine Meshes");
+
+            Vector3 offset = CenterPivot(combined);
+
+            GameObject go = new GameObject();
+            Undo.RegisterCreatedObjectUndo(go, "Combine Meshes");
+
+            go.transform.position = offset;
+            go.AddComponent<MeshFilter>().sharedMesh = combined;
+            MeshRenderer ren = go.AddComponent<MeshRenderer>();
+            ren.sharedMaterials = materials.ToArray();
+
+            Selection.activeTransform = go.transform;
+            EditorGUIUtility.PingObject(go);
+        }
 		/**
 		 * Merge all meshes to a single mesh.
 		 */
-		public static bool Combine(IEnumerable<MeshFilter> meshes, out Mesh result)
+        public static bool Combine(IEnumerable<MeshFilter> meshes, out Mesh result, bool singleMaterial = false)
 		{
 			List<Vector3[]>		vertices 		= new List<Vector3[]>();
 			List<BoneWeight[]>	boneWeights 	= new List<BoneWeight[]>();
@@ -210,12 +256,30 @@ namespace QuickEdit
 			result.uv4 			= uv4.SelectMany(x => x).ToArray();
 #endif
 
-			result.subMeshCount = indices.Count;
+            if (singleMaterial)
+            {
+                result.subMeshCount = 1;
+                int ci = 0;
+                foreach (var l in indices)
+                    ci += l.Length;
 
-			for(int i = 0; i < indices.Count; i++)
-			{
-				result.SetIndices(indices[i], topology[i], i);
-			}
+                int[] indices2 = new int[0];
+
+                foreach (var l in indices)
+                    ArrayUtility.AddRange(ref indices2, l);
+
+                result.SetIndices(indices2, MeshTopology.Triangles, 0);
+            }
+            else
+            {
+                result.subMeshCount = indices.Count;
+
+
+                for (int i = 0; i < indices.Count; i++)
+                {
+                    result.SetIndices(indices[i], topology[i], i);
+                }
+            }
 
 			return true;
 		}
@@ -472,6 +536,121 @@ namespace QuickEdit
 			}
 		}
 
+
+        /**
+         * 
+         */
+        public static bool SnapVertices(qe_Mesh mesh, List<int> selected)
+        {
+            /*
+            Vector3 v = mesh.cloneMesh.vertices[selected[0]];
+
+            Vector3[] verts = mesh.cloneMesh.vertices;
+            for (int a = 1; a < selected.Count; a++)
+            {
+                for (int b = 0; b < verts.Length;b++)
+                    if (verts[selected[a]] == verts[b])
+                        verts[b] = v;
+            }
+*/
+            Vector3[] verts = mesh.cloneMesh.vertices;
+            List<int> trueSelected = new List<int>();
+            Vector3 v = mesh.cloneMesh.vertices[selected[0]];
+
+            for (int b = 0; b < verts.Length;b++) {
+                for (int a = 1; a < selected.Count; a++)
+                {
+                    if (verts[selected[a]] == verts[b])
+                    {
+                        trueSelected.Add(b);
+                    }
+                }
+            }
+
+            foreach (int i in trueSelected)
+                verts[i] = v;
+
+            mesh.cloneMesh.vertices = verts;
+
+            mesh.CacheElements();
+
+           // float d = Vector3.Distance(v,verts[selected[0]]);
+
+            //Debug.Log(">>> " + selected.Count+" / "+c+"/"+d);
+
+            return true;
+        }
+
+        /**
+         * 
+         */
+        public static bool SmoothTriangles(qe_Mesh mesh, List<qe_Triangle> triangles)
+        {
+            
+            List<Vector3> distinctVerts = new List<Vector3>();
+
+            List<int> tris = new List<int>();
+            int i = 0;
+
+            foreach (var t in triangles)
+            {               
+                for (int a=0;a<3;a++) {
+                    Vector3 v = mesh.vertices[t.indices[a]];
+
+                    int oldIdx = -1;
+                    for (int b=0;b<distinctVerts.Count;b++) {
+                        if (v == distinctVerts[b])
+                        {
+                            oldIdx = b;
+                            break;
+                        }
+                    }
+
+                    if (oldIdx==-1) {
+                        oldIdx = distinctVerts.Count;
+                        distinctVerts.Add(v);
+                    }
+
+                    tris.Add(oldIdx);
+                    i++;
+                }
+                                 
+            }
+
+            Debug.Log("Distict verts: " + distinctVerts.Count);
+
+            Mesh tmpMesh = new Mesh();
+
+            tmpMesh.SetVertices(distinctVerts);           
+            tmpMesh.SetTriangles(tris,0);
+
+            tmpMesh.RecalculateNormals();
+
+            Debug.Log("New normals: " + tmpMesh.normals.Length);
+                       
+            Vector3[] norms = mesh.cloneMesh.normals;
+
+            i = 0;
+            foreach (var t in triangles)
+            {               
+                for (int a=0;a<3;a++) {
+                    int di = tris[i];
+
+                    Vector3 n = tmpMesh.normals[di];
+
+                   norms[t.indices[a]] = n;
+
+                    i++;
+                }
+
+            }
+
+            mesh.cloneMesh.normals = norms;
+            mesh.CacheElements();
+
+            return true;
+            //mesh.cloneMesh.RecalculateNormals();
+        }
 		/**
 		 * Remove @triangles from this mesh.
 		 */
@@ -659,6 +838,8 @@ namespace QuickEdit
 			mesh.colors32 = colors;
 			mesh.normals = vertices;
 			mesh.uv = new Vector2[vl]; 
+
+            Debug.Log("Selected faces: " + (triangles.Length/3));
 		}
 
 		public static void MakeEdgeSelectionMesh(ref Mesh mesh, Vector3[] vertices, Vector3[] selected)
@@ -691,6 +872,8 @@ namespace QuickEdit
 
 			mesh.subMeshCount = 1;
 			mesh.SetIndices(triangles, MeshTopology.Lines, 0);
+
+            Debug.Log("Selected edges: " + triangles.Length);
 		}
 
 		public static void MakeVertexSelectionMesh(ref Mesh mesh, Vector3[] vertices, Vector3[] selected)
@@ -760,6 +943,7 @@ namespace QuickEdit
 				t_billboards[t+2] = v[i];
 				t_billboards[t+3] = v[i];
 
+
 				t_uvs[t+0] = Vector3.zero;
 				t_uvs[t+1] = Vector3.right;
 				t_uvs[t+2] = Vector3.up;
@@ -782,10 +966,20 @@ namespace QuickEdit
 				t_tris[n+4] = t+3;
 				t_tris[n+5] = t+2;
 	
-				t_col[t+0] = (Color32) Color.green;
-				t_col[t+1] = (Color32) Color.green;
-				t_col[t+2] = (Color32) Color.green;
-				t_col[t+3] = (Color32) Color.green;
+                if (i == vl && v.Length > 1)
+                {
+                    t_col[t + 0] = (Color32)Color.cyan;
+                    t_col[t + 1] = (Color32)Color.cyan;
+                    t_col[t + 2] = (Color32)Color.cyan;
+                    t_col[t + 3] = (Color32)Color.cyan;
+                }
+                else
+                {
+                    t_col[t + 0] = (Color32)Color.green;
+                    t_col[t + 1] = (Color32)Color.green;
+                    t_col[t + 2] = (Color32)Color.green;
+                    t_col[t + 3] = (Color32)Color.green;
+                }
 
 				t_nrm[t].x = .1f;
 				t_nrm[t+1].x = .1f;
@@ -804,6 +998,8 @@ namespace QuickEdit
 			mesh.uv2 = t_uv2;
 			mesh.colors32 = t_col;
 			mesh.triangles = t_tris;
+
+            Debug.Log("Selected vertices: " + selected.Length);
 		}
 #endregion
 	}

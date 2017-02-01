@@ -24,7 +24,7 @@ namespace QuickEdit
 		Rect windowRect = new Rect(24, 24, 200, 260);
 #else
 		// Size of the GUI window.
-		Rect windowRect = new Rect(24, 24, 105, 150);
+		Rect windowRect = new Rect(24, 24, 105, 190);
 #endif
 
 		// Automatically set - used to clamp the GUI window to the sceneview window rect.
@@ -50,6 +50,9 @@ namespace QuickEdit
 		GUIContent gc_RebuildColliders = new GUIContent("Collider", "Rebuild the mesh collisions.");
 		GUIContent gc_DeleteFaces = new GUIContent("Delete Faces", "Delete all selected faces from the mesh.");
 		GUIContent gc_CenterPivot = new GUIContent("Center Pivot", "Make the pivot point of this mesh equal to the center of the mesh bounds.");
+        GUIContent gc_SmoothSelected = new GUIContent("Smooth Selected", "");
+        GUIContent gc_SnapSelected = new GUIContent("Snap to 1st V", "");
+
 
 		public static qe_Editor instance { get { return singleton; } }
 		[SerializeField] private static qe_Editor singleton;
@@ -455,7 +458,7 @@ namespace QuickEdit
 				}
 			GUILayout.EndHorizontal();
 
-			if(GUILayout.Button(gc_CenterPivot, EditorStyles.miniButton))
+            if(GUILayout.Button(gc_CenterPivot, EditorStyles.miniButton))
 			{
 				qeUtil.RecordMeshUndo(selection.mesh, "Center Pivot");
 				Vector3 offset = qe_Mesh_Utility.CenterPivot(selection.mesh.cloneMesh);
@@ -463,6 +466,28 @@ namespace QuickEdit
 				selection.transform.position += offset;
 				selection.CacheMeshValues();
 			}
+
+            if(GUILayout.Button(gc_SmoothSelected, EditorStyles.miniButton) && elementMode==ElementMode.Face && selection.faces.Count > 0) {                
+
+                qeUtil.RecordMeshUndo(selection.mesh, "Smooth Faces");
+
+                if( qe_Mesh_Utility.SmoothTriangles( selection.mesh, selection.faces ) )
+                {                                
+                    CacheIndicesForGraphics();
+                    UpdateGraphics();
+                }            
+            }
+
+            if(GUILayout.Button(gc_SnapSelected, EditorStyles.miniButton)  && elementMode==ElementMode.Vertex && selectedIndices.Count > 0) {                
+
+                qeUtil.RecordMeshUndo(selection.mesh, "Snap vertices");
+
+                if( qe_Mesh_Utility.SnapVertices( selection.mesh, selectedIndices ) )
+                {                                
+                    CacheIndicesForGraphics();
+                    UpdateGraphics();
+                }            
+            }
 
 			if(GUILayout.Button(gc_DeleteFaces, EditorStyles.miniButton) && selection.faces.Count > 0)
 			{
