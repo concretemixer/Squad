@@ -1,60 +1,19 @@
 fileFormatVersion: 2
-guid: 87fc1126cf64aa14c87121c050618062
-timeCreated: 1485879223
+guid: 209b5bf52cc1ec945bb562caecd40b13
+timeCreated: 1485946230
 licenseType: Free
 ModelImporter:
   serializedVersion: 19
   fileIDToRecycleName:
     100000: //RootNode
-    100002: _RocksDown
-    100004: _RocksUp
-    100006: _BankLeft
-    100008: _StonePath
-    100010: _BankRight
-    100012: _River
-    100014: _Fence
-    100016: _SF_Bld_Goblin_Tower_01
     400000: //RootNode
-    400002: _RocksDown
-    400004: _RocksUp
-    400006: _BankLeft
-    400008: _StonePath
-    400010: _BankRight
-    400012: _River
-    400014: _Fence
-    400016: _SF_Bld_Goblin_Tower_01
     2300000: //RootNode
-    2300002: _RocksDown
-    2300004: _RocksUp
-    2300006: _BankLeft
-    2300008: _StonePath
-    2300010: _BankRight
-    2300012: _River
-    2300014: _Fence
-    2300016: _SF_Bld_Goblin_Tower_01
     3300000: //RootNode
-    3300002: _RocksDown
-    3300004: _RocksUp
-    3300006: _BankLeft
-    3300008: _StonePath
-    3300010: _BankRight
-    3300012: _River
-    3300014: _Fence
-    3300016: _SF_Bld_Goblin_Tower_01
-    4300000: _RocksDown
-    4300002: _RocksUp
-    4300004: _BankLeft
-    4300006: _StonePath
-    4300008: _River
-    4300010: _BankRight
-    4300012: _Fence
-    4300014: _SF_Bld_Goblin_Tower_01
-    7400000: Take 001
-    9500000: //RootNode
+    4300000: SF_Bld_Goblin_Tower_01 (1)
   materials:
     importMaterials: 1
-    materialName: 0
-    materialSearch: 1
+    materialName: 1
+    materialSearch: 2
   animations:
     legacyGenerateAnimations: 4
     bakeSimulation: 0
@@ -93,7 +52,7 @@ ModelImporter:
   tangentSpace:
     normalSmoothAngle: 60
     normalImportMode: 0
-    tangentImportMode: 3
+    tangentImportMode: 0
   importAnimation: 1
   copyAvatar: 0
   humanDescription:
@@ -109,7 +68,7 @@ ModelImporter:
     rootMotionBoneName: 
     hasTranslationDoF: 0
   lastHumanDescriptionAvatarSource: {instanceID: 0}
-  animationType: 2
+  animationType: 0
   humanoidOversampling: 1
   additionalBone: 0
   userData: 
