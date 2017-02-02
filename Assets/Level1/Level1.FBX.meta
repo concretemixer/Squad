@@ -18,6 +18,7 @@ ModelImporter:
     100020: _BankRight3
     100022: _BankLeft2
     100024: _BankLeft3
+    100026: _BankNavigation
     400000: //RootNode
     400002: _RocksDown
     400004: _RocksUp
@@ -31,6 +32,7 @@ ModelImporter:
     400020: _BankRight3
     400022: _BankLeft2
     400024: _BankLeft3
+    400026: _BankNavigation
     2300000: //RootNode
     2300002: _RocksDown
     2300004: _RocksUp
@@ -44,6 +46,7 @@ ModelImporter:
     2300020: _BankRight3
     2300022: _BankLeft2
     2300024: _BankLeft3
+    2300026: _BankNavigation
     3300000: //RootNode
     3300002: _RocksDown
     3300004: _RocksUp
@@ -57,6 +60,7 @@ ModelImporter:
     3300020: _BankRight3
     3300022: _BankLeft2
     3300024: _BankLeft3
+    3300026: _BankNavigation
     4300000: _RocksDown
     4300002: _RocksUp
     4300004: _BankLeft
@@ -69,6 +73,7 @@ ModelImporter:
     4300018: _BankRight3
     4300020: _BankLeft2
     4300022: _BankLeft3
+    4300024: _BankNavigation
     7400000: Take 001
     9500000: //RootNode
   materials:
@@ -78,7 +83,7 @@ ModelImporter:
   animations:
     legacyGenerateAnimations: 4
     bakeSimulation: 0
-    resampleRotations: 1
+    resampleCurves: 1
     optimizeGameObjects: 0
     motionNodeName: 
     animationImportErrors: 
@@ -117,6 +122,7 @@ ModelImporter:
   importAnimation: 1
   copyAvatar: 0
   humanDescription:
+    serializedVersion: 2
     human: []
     skeleton: []
     armTwist: 0.5
@@ -127,7 +133,10 @@ ModelImporter:
     legStretch: 0.05
     feetSpacing: 0
     rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
     hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 0
   lastHumanDescriptionAvatarSource: {instanceID: 0}
   animationType: 2
   humanoidOversampling: 1
