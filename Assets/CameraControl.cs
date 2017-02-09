@@ -3,6 +3,8 @@ using System.Collections;
 
 public class CameraControl : MonoBehaviour {
 
+    public HexGrid grid;
+
     Plane ground = new Plane(Vector3.up, Vector3.zero);
 
 
@@ -30,11 +32,14 @@ public class CameraControl : MonoBehaviour {
 
         if (Input.GetMouseButton(0))
         {
-            gameObject.transform.Rotate(Vector3.up, -40 * Time.deltaTime);
+            //gameObject.transform.Rotate(Vector3.up, -40 * Time.deltaTime);
         }
         if (Input.GetMouseButton(1))
         {
-            gameObject.transform.Rotate(Vector3.up, 40 * Time.deltaTime);
+            if (Input.GetKey(KeyCode.LeftControl))
+                gameObject.transform.Rotate(Vector3.up, -40 * Time.deltaTime);
+            else
+                gameObject.transform.Rotate(Vector3.up, 40 * Time.deltaTime);
         }
 
     }
