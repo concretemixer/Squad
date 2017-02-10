@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class CameraControl : MonoBehaviour {
 
@@ -7,6 +8,8 @@ public class CameraControl : MonoBehaviour {
 
     Plane ground = new Plane(Vector3.up, Vector3.zero);
 
+    bool to = false;
+    Vector3 from;
 
 	// Use this for initialization
 	void Start () {
@@ -30,9 +33,39 @@ public class CameraControl : MonoBehaviour {
             }
         }
 
-        if (Input.GetMouseButton(0))
+        if (Input.GetMouseButtonDown(0))
         {
-            //gameObject.transform.Rotate(Vector3.up, -40 * Time.deltaTime);
+            Camera camera = Camera.main;
+
+            Ray ray = camera.ScreenPointToRay(Input.mousePosition);
+
+            float rayDistance;
+            if (ground.Raycast(ray, out rayDistance))
+            {
+                Vector3 touchGround = ray.origin + ray.direction * rayDistance;
+                HexGrid.GridCell cell = grid.GetNearestCell(touchGround);
+
+                cell.go.SetActive(true);
+
+                if (to)
+                {
+                    List<HexGrid.GridCell> path = grid.GetPath(from,touchGround);
+                    to = false;
+
+                    foreach (var p in path)
+                        p.go.SetActive(true);
+                }
+                else
+                {
+                    to = true;
+                    from = touchGround;
+                }
+
+
+            }
+
+
+
         }
         if (Input.GetMouseButton(1))
         {
