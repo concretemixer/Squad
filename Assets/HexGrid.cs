@@ -118,7 +118,7 @@ public class HexGrid : MonoBehaviour {
                     if ((pathCells[cell.x, cell.z] & 0xFFFF) == wave)
                     {
                         
-                        //cell.go.SetActive(true);
+                      //  cell.go.SetActive(true);
                         
                         if (pathCells[cell.x + 1, cell.z + 0] == 0)
                         {
@@ -206,6 +206,8 @@ public class HexGrid : MonoBehaviour {
             }
 
         }
+
+        path.Reverse();
 
         return path;
     }

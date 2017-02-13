@@ -6,6 +6,7 @@ public class CameraControl : MonoBehaviour {
 
     public HexGrid grid;
 
+    public Character hero;
     Plane ground = new Plane(Vector3.up, Vector3.zero);
 
     bool to = false;
@@ -35,36 +36,7 @@ public class CameraControl : MonoBehaviour {
 
         if (Input.GetMouseButtonDown(0))
         {
-            Camera camera = Camera.main;
-
-            Ray ray = camera.ScreenPointToRay(Input.mousePosition);
-
-            float rayDistance;
-            if (ground.Raycast(ray, out rayDistance))
-            {
-                Vector3 touchGround = ray.origin + ray.direction * rayDistance;
-                HexGrid.GridCell cell = grid.GetNearestCell(touchGround);
-
-                cell.go.SetActive(true);
-
-                if (to)
-                {
-                    List<HexGrid.GridCell> path = grid.GetPath(from,touchGround);
-                    to = false;
-
-                    foreach (var p in path)
-                        p.go.SetActive(true);
-                }
-                else
-                {
-                    to = true;
-                    from = touchGround;
-                }
-
-
-            }
-
-
+            hero.OnClick();
 
         }
         if (Input.GetMouseButton(1))
