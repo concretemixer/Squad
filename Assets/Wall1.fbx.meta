@@ -1,0 +1,140 @@
+fileFormatVersion: 2
+guid: d614acf7c0fc3b5418c716aa3003edcb
+timeCreated: 1491244716
+licenseType: Free
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: //RootNode
+    100002: factory_tinyl_tan
+    100004: wall1
+    100006: _Wall2
+    100008: _fence
+    100010: _hash
+    100012: _fence2
+    100014: _fence3
+    100016: _fence_door
+    100018: _fence_door2
+    100020: _sand
+    100022: _grass1
+    100024: _grass2
+    400000: //RootNode
+    400002: factory_tinyl_tan
+    400004: wall1
+    400006: _Wall2
+    400008: _fence
+    400010: _hash
+    400012: _fence2
+    400014: _fence3
+    400016: _fence_door
+    400018: _fence_door2
+    400020: _sand
+    400022: _grass1
+    400024: _grass2
+    2300000: //RootNode
+    2300002: factory_tinyl_tan
+    2300004: wall1
+    2300006: _Wall2
+    2300008: _fence
+    2300010: _hash
+    2300012: _fence2
+    2300014: _fence3
+    2300016: _fence_door
+    2300018: _fence_door2
+    2300020: _sand
+    2300022: _grass1
+    2300024: _grass2
+    3300000: //RootNode
+    3300002: factory_tinyl_tan
+    3300004: wall1
+    3300006: _Wall2
+    3300008: _fence
+    3300010: _hash
+    3300012: _fence2
+    3300014: _fence3
+    3300016: _fence_door
+    3300018: _fence_door2
+    3300020: _sand
+    3300022: _grass1
+    3300024: _grass2
+    4300000: Wall1
+    4300002: factory_tinyl_tan
+    4300004: wall1
+    4300006: _Wall2
+    4300008: _fence
+    4300010: _hash
+    4300012: _fence2
+    4300014: _fence3
+    4300016: _fence_door
+    4300018: _fence_door2
+    4300020: _sand
+    4300022: _grass1
+    4300024: _grass2
+  materials:
+    importMaterials: 1
+    materialName: 1
+    materialSearch: 2
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 1
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 0
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 0
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
