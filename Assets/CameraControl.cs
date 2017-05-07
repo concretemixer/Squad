@@ -34,17 +34,18 @@ public class CameraControl : MonoBehaviour {
             }
         }
 
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButton(0))
         {
-            hero.OnClick();
+                gameObject.transform.Rotate(Vector3.up, 40 * Time.deltaTime);
+//            hero.OnClick();
 
         }
         if (Input.GetMouseButton(1))
         {
             if (Input.GetKey(KeyCode.LeftControl))
-                gameObject.transform.Rotate(Vector3.up, -40 * Time.deltaTime);
-            else
                 gameObject.transform.Rotate(Vector3.up, 40 * Time.deltaTime);
+            else
+                gameObject.transform.Rotate(Vector3.up, -40 * Time.deltaTime);
         }
 
     }
